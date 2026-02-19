@@ -192,7 +192,7 @@ function checkLogin() {
     if(user === 'a' && pass === 'a') {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'flex';
-        const msg = new SpeechSynthesisUtterance("Most welcome to Ahad SIM Info");
+        const msg = new SpeechSynthesisUtterance("Welcome to Ahad SIM Information");
         window.speechSynthesis.speak(msg);
     } else {
         alert("Invalid username or password!");
