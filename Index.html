@@ -189,13 +189,13 @@ input::placeholder { color: #4a5a7a; }
 function checkLogin() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
-    if(user === 'a' && pass === 'a') {
+    if(user === 'a1' && pass === 'a11') {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'flex';
         const msg = new SpeechSynthesisUtterance("Welcome to Ahad SIM Information");
         window.speechSynthesis.speak(msg);
     } else {
-        alert("Invalid username or password!");
+        alert("Nikal beta yaha sa Ahad sa rabta kr");
     }
 }
 
