@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
+    <title>AHAD SIM INFO | MATRIX TERMINAL</title>
+    <style>
+        /* --- FULL PROFESSIONAL HACKER MATRIX LOOK --- */
+        :root {
+            --bg-deep: #0a0c10;
+            --bg-panel: #0d1117;
+            --bg-card: #11161e;
+            --border-glow: #00ffc3;
+            --terminal-green: #00ffaa;
+            --terminal-cyan: #00fff9;
+            --dark-cyan: #0088aa;
+            --matrix-shadow: 0 0 20px #00ffc3;
+            --font-matrix: 'Share Tech Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            --text-primary: #d0fff0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* background image */
+            background-image: url('https://image2url.com/r2/default/images/1771866273275-868c9b80-dd47-41b4-b07b-ee06c4834293.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: var(--text-primary);
+            font-family: var(--font-matrix);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        /* Dark overlay with matrix tint */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 20, 10, 0.65);
+            backdrop-filter: blur(2px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* DIGITAL RAIN OVERRIDE - subtle grid */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(0, 255, 200, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 255, 200, 0.08) 1px, transparent 1px);
+            background-size: 35px 35px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* SCANNER LINE */
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #00ffc3, 
+                #80ffea, 
+                #00ffc3, 
+                transparent);
+            filter: blur(2px);
+            box-shadow: 0 0 30px #00ffff;
+            animation: matrixScan 4s ease-in-out infinite;
+            z-index: 100;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        @keyframes matrixScan {
+            0% { top: 0%; opacity: 0.3; }
+            25% { top: 30%; opacity: 0.8; filter: blur(1px); }
+            50% { top: 70%; opacity: 1; filter: blur(3px); }
+            75% { top: 40%; opacity: 0.8; }
+            100% { top: 0%; opacity: 0.3; }
+        }
+
+        /* main container */
+        .matrix-container {
+            max-width: 450px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0.8rem 0.7rem;
+            position: relative;
+            z-index: 20;
+        }
+
+        /* ===== HEADER ===== */
+        .matrix-header {
+            border: 1px solid #00ffc3;
+            padding: 1.2rem 0.7rem;
+            margin-bottom: 1.2rem;
+            background: rgba(0, 20, 20, 0.5);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 25px rgba(0, 255, 200, 0.3);
+            border-radius: 0;
+            clip-path: polygon(0 0, 100% 0, 98% 100%, 2% 100%);
+            /* flex column for centering */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* ascii centered now */
+        .ascii {
+            font-size: 1rem;
+            color: #00ffc3;
+            letter-spacing: 4px;
+            text-align: center;
+            text-shadow: 0 0 10px #00ffc3;
+        }
+
+        .status-led {
+            width: 12px;
+            height: 12px;
+            background: #00ffc3;
+            border-radius: 0;
+            box-shadow: 0 0 15px #00ffc3, 0 0 30px #00aa88;
+            animation: blink 1.2s step-end infinite;
+            align-self: flex-end; /* keep led at right corner */
+            margin-top: -1.5rem;   /* adjust position */
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        /* --- PROFILE CIRCLE - MUCH BIGGER --- */
+        .profile-circle {
+            width: 120px;           /* even bigger */
+            height: 120px;
+            border-radius: 50%;
+            background-image: url('https://image2url.com/r2/default/images/1771867049421-21942fc6-d7c9-4049-a3c9-01e44877a2c7.png');
+            background-size: cover;
+            background-position: center;
+            border: 4px solid #00ffc3;
+            box-shadow: 0 0 40px #00ffc3, inset 0 0 15px rgba(0,255,200,0.9);
+            filter: drop-shadow(0 0 12px #00cc88);
+            transition: 0.2s;
+            margin: 0 auto;
+        }
+        .profile-circle:hover {
+            transform: scale(1.05);
+            border-color: #80ffea;
+            box-shadow: 0 0 60px #80ffea;
+        }
+
+        /* LED container to hold led aligned right */
+        .led-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* LOGIN BOX (initially visible) */
+        .login-panel {
+            background: rgba(5, 15, 10, 0.8);
+            backdrop-filter: blur(8px);
+            border: 2px solid #00ffc3;
+            padding: 1.5rem 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 35px rgba(0, 255, 200, 0.3), inset 0 0 15px rgba(0, 255, 200, 0.2);
+            clip-path: polygon(0 0, 100% 0, 99.5% 95%, 0.5% 100%);
+        }
+
+        .login-title {
+            text-align: center;
+            color: #00ffc3;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .input-group {
+            position: relative;
+            margin: 1rem 0;
+            border-left: 4px solid #00ffc3;
+            padding-left: 10px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.6rem;
+            color: #88ffdd;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .matrix-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #00ffc3;
+            color: #ffffff;
+            font-family: var(--font-matrix);
+            font-size: 1rem;
+            padding: 8px 0;
+            outline: none;
+            text-shadow: 0 0 8px #00ffc3;
+        }
+
+        .matrix-input:focus {
+            border-bottom-color: #80ffea;
+            box-shadow: 0 10px 20px -12px #00ffc3;
+        }
+
+        .matrix-btn {
+            width: 100%;
+            background: transparent;
+            border: 2px solid #00ffc3;
+            color: #00ffc3;
+            font-family: var(--font-matrix);
+            font-size: 0.9rem;
+            font-weight: bold;
+            padding: 12px 0;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 0 20px transparent;
+            margin-top: 15px;
+            position: relative;
+            z-index: 2;
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0% 100%);
+            backdrop-filter: blur(4px);
+        }
+
+        .matrix-btn:hover {
+            background: #00ffc3;
+            color: #000;
+            box-shadow: 0 0 35px #00ffc3;
+            text-shadow: none;
+            font-weight: bold;
+        }
+
+        .matrix-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* login error */
+        .login-error {
+            color: #ff5f5f;
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* Main content (hidden until login) */
+        #mainContent {
+            display: none;
+        }
+
+        /* loader */
+        .matrix-loader {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            border: 1px dashed #00ffc3;
+            background: rgba(10, 15, 10, 0.8);
+            backdrop-filter: blur(8px);
+            margin: 10px 0;
+        }
+
+        .loader-bar {
+            width: 100%;
+            height: 6px;
+            background: #112211;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #00ffc3, transparent);
+            animation: load 1.5s linear infinite;
+        }
+
+        @keyframes load {
+            100% { left: 100%; }
+        }
+
+        /* results card */
+        .matrix-card {
+            border: 1px solid #00ffc3;
+            margin-bottom: 1rem;
+            background: rgba(0, 20, 10, 0.75);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 28px rgba(0, 255, 200, 0.2), inset 0 0 15px rgba(0, 255, 200, 0.1);
+            position: relative;
+        }
+
+        .card-header-matrix {
+            background: rgba(0, 26, 15, 0.8);
+            padding: 0.4rem 0.9rem;
+            border-bottom: 1px solid #00ffc3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #9efff0;
+        }
+
+        .card-body-matrix {
+            padding: 0.8rem 0.8rem;
+        }
+
+        .matrix-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 0.4rem 0;
+            border-bottom: 1px dotted #00aa88;
+            font-size: 0.7rem;
+        }
+
+        .matrix-row:last-child {
+            border-bottom: none;
+        }
+
+        .matrix-label {
+            min-width: 70px;
+            color: #00ffc3;
+            font-weight: 500;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .matrix-value {
+            color: white;
+            word-break: break-word;
+            flex: 1;
+            text-align: right;
+            font-family: var(--font-matrix);
+        }
+
+        .copy-matrix {
+            background: transparent;
+            border: 1px solid #00ffc3;
+            padding: 3px;
+            line-height: 1;
+            cursor: pointer;
+            color: #00ffc3;
+            border-radius: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            transition: 0.2s;
+        }
+
+        .copy-matrix:hover {
+            background: #00ffc3;
+            color: black;
+        }
+
+        .card-footer-matrix {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0.4rem 0.8rem 0.8rem;
+            gap: 8px;
+        }
+
+        .matrix-dl-btn {
+            background: transparent;
+            border: 1px solid #00ffc3;
+            color: #00ffc3;
+            font-size: 0.6rem;
+            padding: 5px 10px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: var(--font-matrix);
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+        }
+
+        .matrix-dl-btn:hover {
+            background: #004d40;
+            border-color: white;
+            color: white;
+        }
+
+        .badge-matrix {
+            border: 1px solid #00ffc3;
+            color: #b3ffe6;
+            padding: 2px 8px;
+            font-size: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        /* toast */
+        .matrix-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0, 26, 15, 0.9);
+            backdrop-filter: blur(8px);
+            border: 2px solid #00ffc3;
+            color: #00ffc3;
+            padding: 12px 20px;
+            transform: translateY(150%);
+            transition: 0.3s;
+            z-index: 9999;
+            max-width: 350px;
+            margin: 0 auto;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 0 30px #00ffc3;
+        }
+
+        .matrix-toast.show {
+            transform: translateY(0);
+        }
+
+        /* status boxes */
+        .status-box-matrix {
+            border: 1px solid #00ffc3;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 0.8rem 0;
+            background: rgba(0, 10, 5, 0.7);
+            backdrop-filter: blur(8px);
+            color: #88ffdd;
+        }
+
+        /* WhatsApp channel link */
+        .wp-matrix-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid #00ffc3;
+            padding: 5px 12px;
+            color: #00ffc3;
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            transition: 0.2s;
+            background: rgba(0, 20, 10, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        .wp-matrix-link:hover {
+            background: #00ffc3;
+            color: black;
+        }
+
+        /* footer */
+        .matrix-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.55rem;
+            color: #00aa88;
+            border-top: 1px solid #00ffc3;
+            padding-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* MODAL POPUP WITH TWO BUTTONS */
+        .matrix-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 5, 2, 0.9);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 1rem;
+        }
+
+        .matrix-modal-content {
+            max-width: 340px;
+            width: 100%;
+            background: rgba(5, 15, 8, 0.95);
+            border: 3px solid #00ffc3;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 0 50px #00ffc3, inset 0 0 20px rgba(0, 255, 200, 0.3);
+            clip-path: polygon(2% 0, 100% 0, 98% 100%, 0% 100%);
+            text-align: center;
+        }
+
+        .matrix-modal-content h2 {
+            color: #00ffc3;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .matrix-modal-content p {
+            color: #b3ffe6;
+            font-size: 0.8rem;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .modal-btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 10px 0;
+            font-family: var(--font-matrix);
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+        }
+
+        .modal-btn.join {
+            background: #00cc66;
+            color: #000;
+            border: 1px solid #00ffaa;
+            box-shadow: 0 0 20px #00ffaa;
+        }
+        .modal-btn.join:hover {
+            background: #00ff88;
+            box-shadow: 0 0 35px #00ffaa;
+        }
+
+        .modal-btn.already {
+            background: #cc3333;
+            color: white;
+            border: 1px solid #ff6666;
+            box-shadow: 0 0 20px #ff3333;
+        }
+        .modal-btn.already:hover {
+            background: #ff4444;
+            box-shadow: 0 0 35px #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="scan-line"></div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="matrix-container">
+        <!-- HEADER - now with centered ascii and bigger profile -->
+        <div class="matrix-header">
+            <div class="ascii">[AHAD][SIM][INFO]</div>
+            <div class="profile-circle"></div>
+            <div class="led-wrapper">
+                <div class="status-led"></div>
+            </div>
+        </div>
+
+        <!-- LOGIN PANEL (visible first) -->
+        <div id="loginPanel" class="login-panel">
+            <div class="login-title">🔐 TERMINAL LOGIN</div>
+            <div class="input-group">
+                <label>>_ USERNAME</label>
+                <input type="text" id="loginUsername" class="matrix-input" value="" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label>>_ PASSWORD</label>
+                <input type="password" id="loginPassword" class="matrix-input" value="" autocomplete="off">
+            </div>
+            <button class="matrix-btn" id="loginBtn">▶ AUTHENTICATE</button>
+            <div id="loginError" class="login-error"></div>
+        </div>
+
+        <!-- MAIN CONTENT (hidden until login) -->
+        <div id="mainContent">
+            <!-- INFO BANNER with WhatsApp channel -->
+            <div style="margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;">
+                <span style="color:#00ffc3; font-size:0.65rem;">ROOT::AHAD_SIM_DB</span>
+                <a href="https://whatsapp.com/channel/0029Vb6BEaL8KMqg5r7Qm01t" target="_blank" class="wp-matrix-link">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.997 2C6.477 2 2 6.477 2 12c0 1.989.574 3.842 1.563 5.408L2.046 22l4.709-1.489A9.935 9.935 0 0011.997 22C17.52 22 22 17.523 22 12S17.52 2 11.997 2z"/></svg>
+                    AHAD-CHAN
+                </a>
+            </div>
+
+            <!-- TERMINAL SEARCH PANEL -->
+            <div class="terminal-panel">
+                <div class="prompt-line">
+                    <span class="prompt">#</span> <span>lookup --type sim --access ahad</span>
+                </div>
+                <div class="input-group">
+                    <label>>_ TARGET (phone or CNIC)</label>
+                    <input type="text" id="matrixInput" class="matrix-input" placeholder="03XXXXXXXXX / 12345-1234567-1" autocomplete="off">
+                </div>
+                <button class="matrix-btn" id="matrixSearchBtn">▶ EXECUTE SCAN</button>
+            </div>
+
+            <!-- LOADER -->
+            <div id="matrixLoader" class="matrix-loader">
+                <span style="color:#00ffc3;">SCANNING AHAD DATABASE</span>
+                <div class="loader-bar"></div>
+            </div>
+
+            <!-- ERROR / EMPTY STATES -->
+            <div id="matrixError" class="status-box-matrix" style="display:none;">
+                <span style="color:#ff5f5f;">⛔ ACCESS DENIED / NO CARRIER</span>
+            </div>
+            <div id="matrixEmpty" class="status-box-matrix" style="display:none;">
+                <span style="color:#ffcc00;">⛔ NUMBER/CNIC NOT IN DATABASE</span>
+            </div>
+
+            <!-- RESULTS GRID -->
+            <div id="matrixResults"></div>
+
+            <!-- DOWNLOAD ALL BUTTON -->
+            <div id="matrixDownloadAllWrap" style="display:none; margin: 0.8rem 0;">
+                <button class="matrix-btn" onclick="downloadAllMatrixCards()" style="padding:10px;">⬇ DOWNLOAD ALL RECORDS (PNG)</button>
+            </div>
+        </div> <!-- end mainContent -->
+
+        <!-- FOOTER -->
+        <div class="matrix-footer">
+            <span>AHAD SIM INFO // CNIC LOOKUP // SECURE TERMINAL</span>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="matrixToast" class="matrix-toast">[CLIPBOARD]</div>
+
+    <!-- MODAL POPUP with two buttons -->
+    <div id="wpChannelModal" class="matrix-modal-overlay">
+        <div class="matrix-modal-content">
+            <h2>⚠️ JOIN CHANNEL</h2>
+            <p>Get latest tools & updates via WhatsApp</p>
+            <div class="modal-btn-group">
+                <button class="modal-btn join" id="modalJoinBtn">JOIN</button>
+                <button class="modal-btn already" id="modalAlreadyBtn">ALREADY JOINED</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        (function() {
+            // --- DOM elements for login ---
+            const loginPanel = document.getElementById('loginPanel');
+            const mainContent = document.getElementById('mainContent');
+            const loginUsername = document.getElementById('loginUsername');
+            const loginPassword = document.getElementById('loginPassword');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+
+            // --- other DOM elements (for after login) ---
+            const inputField = document.getElementById('matrixInput');
+            const searchBtn = document.getElementById('matrixSearchBtn');
+            const resultsDiv = document.getElementById('matrixResults');
+            const loader = document.getElementById('matrixLoader');
+            const errorDiv = document.getElementById('matrixError');
+            const emptyDiv = document.getElementById('matrixEmpty');
+            const toast = document.getElementById('matrixToast');
+            const downloadAllWrap = document.getElementById('matrixDownloadAllWrap');
+
+            // Modal elements
+            const wpModal = document.getElementById('wpChannelModal');
+            const joinBtn = document.getElementById('modalJoinBtn');
+            const alreadyBtn = document.getElementById('modalAlreadyBtn');
+
+            // API endpoint 
+            const API_URL = "https://howler-database-api.vercel.app/api/lookup?phone=";
+
+            // helper toast
+            let toastTimer;
+            function showMatrixToast(msg, isError = false) {
+                toast.textContent = `[${msg}]`;
+                toast.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => toast.classList.remove('show'), 1600);
+            }
+
+            // reset UI
+            function resetMatrixUI() {
+                resultsDiv.innerHTML = '';
+                errorDiv.style.display = 'none';
+                emptyDiv.style.display = 'none';
+                downloadAllWrap.style.display = 'none';
+            }
+
+            // --- BEEP SOUND FUNCTION ---
+            function playBeep() {
+                try {
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.2);
+                    
+                    if (audioCtx.state === 'suspended') {
+                        audioCtx.resume();
+                    }
+                } catch (e) {}
+            }
+
+            // --- SPEECH WELCOME ---
+            function speakWelcome() {
+                try {
+                    window.speechSynthesis?.cancel();
+                    const utterance = new SpeechSynthesisUtterance("Welcome to Ahad SIM Info");
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.9;
+                    utterance.pitch = 1.1;
+                    window.speechSynthesis?.speak(utterance);
+                } catch (e) {}
+            }
+
+            // Play welcome on first interaction
+            let welcomeDone = false;
+            function tryPlayWelcome() {
+                if (!welcomeDone) {
+                    welcomeDone = true;
+                    playBeep();
+                    setTimeout(() => speakWelcome(), 250);
+                }
+            }
+            document.addEventListener('click', function once() { tryPlayWelcome(); document.removeEventListener('click', once); }, { once: true });
+            document.addEventListener('keydown', function onceKey() { tryPlayWelcome(); document.removeEventListener('keydown', onceKey); }, { once: true });
+
+            // --- MODAL FUNCTIONS ---
+            function showWpModal() {
+                wpModal.style.display = 'flex';
+            }
+
+            function hideWpModal() {
+                wpModal.style.display = 'none';
+            }
+
+            joinBtn.addEventListener('click', function() {
+                window.open('https://whatsapp.com/channel/0029Vb6BEaL8KMqg5r7Qm01t', '_blank');
+                hideWpModal();
+                sessionStorage.setItem('wpModalShown', 'true');
+            });
+
+            alreadyBtn.addEventListener('click', function() {
+                hideWpModal();
+                sessionStorage.setItem('wpModalShown', 'true');
+            });
+
+            wpModal.addEventListener('click', function(e) {
+                if (e.target === wpModal) hideWpModal();
+            });
+
+            // --- LOGIN FUNCTION ---
+            function handleLogin() {
+                const user = loginUsername.value.trim();
+                const pass = loginPassword.value.trim();
+                // hardcoded credentials: ahad / ahad123
+                if (user === 'ahad' && pass === 'ahad123') {
+                    loginPanel.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    loginError.textContent = '';
+                    // Optional: play a sound
+                    playBeep();
+                } else {
+                    loginError.textContent = '⛔ ACCESS DENIED // INVALID CREDENTIALS';
+                }
+            }
+
+            loginBtn.addEventListener('click', handleLogin);
+            loginPassword.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleLogin(); });
+
+            // --- main search function (only accessible after login) ---
+            async function executeMatrixSearch() {
+                const rawQuery = inputField.value.trim();
+                if (!rawQuery || rawQuery.length < 4) {
+                    showMatrixToast('INVALID INPUT', true);
+                    return;
+                }
+
+                resetMatrixUI();
+                loader.style.display = 'flex';
+                searchBtn.disabled = true;
+
+                try {
+                    const response = await fetch(`${API_URL}${encodeURIComponent(rawQuery)}`);
+                    if (!response.ok) throw new Error('API fail');
+                    const data = await response.json();
+
+                    if (data.success === true && data.result && data.result.length > 0) {
+                        renderMatrixRecords(data.result);
+                        
+                        if (!sessionStorage.getItem('wpModalShown')) {
+                            setTimeout(() => showWpModal(), 500);
+                        }
+                    } else {
+                        emptyDiv.style.display = 'block';
+                    }
+                } catch (e) {
+                    errorDiv.style.display = 'block';
+                } finally {
+                    loader.style.display = 'none';
+                    searchBtn.disabled = false;
+                }
+            }
+
+            // render records
+            function renderMatrixRecords(records) {
+                records.forEach((rec, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'matrix-card';
+
+                    const fields = [
+                        { label: "NAME", value: rec.name || "N/A" },
+                        { label: "MOBILE", value: rec.mobile ? (rec.mobile.startsWith('0') ? rec.mobile.substring(1) : rec.mobile) : "N/A" },
+                        { label: "CNIC", value: rec.cnic || "N/A" },
+                        { label: "ADDRESS", value: rec.address || "N/A" },
+                        { label: "COUNTRY", value: rec.country || "N/A" }
+                    ];
+
+                    let rowsHtml = '';
+                    fields.forEach(f => {
+                        const escapedValue = f.value.replace(/'/g, "\\'");
+                        rowsHtml += `
+                            <div class="matrix-row">
+                                <span class="matrix-label">${f.label}</span>
+                                <span class="matrix-value">${f.value}</span>
+                                <button class="copy-matrix" onclick="copyMatrixText('${escapedValue}')">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        `;
+                    });
+
+                    card.innerHTML = `
+                        <div class="card-header-matrix">
+                            <span>🔹 RECORD #${idx+1} [AHAD VERIFIED]</span>
+                            <span class="badge-matrix">✔ SECURE</span>
+                        </div>
+                        <div class="card-body-matrix">
+                            ${rowsHtml}
+                        </div>
+                        <div class="card-footer-matrix">
+                            <button class="matrix-dl-btn" onclick="downloadMatrixCard(this)">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 3v12M8 11l4 4 4-4"/><rect x="3" y="17" width="18" height="4" rx="1"/>
+                                </svg>
+                                PNG
+                            </button>
+                        </div>
+                    `;
+
+                    resultsDiv.appendChild(card);
+                });
+                downloadAllWrap.style.display = 'block';
+            }
+
+            // copy function
+            window.copyMatrixText = function(text) {
+                if (!text || text === "N/A") return;
+                navigator.clipboard.writeText(text).then(() => {
+                    showMatrixToast('COPIED');
+                });
+            };
+
+            // download single card
+            window.downloadMatrixCard = function(btn) {
+                const card = btn.closest('.matrix-card');
+                const allCopy = card.querySelectorAll('.copy-matrix');
+                const dlBtn = card.querySelector('.matrix-dl-btn');
+                allCopy.forEach(b => b.style.visibility = 'hidden');
+                dlBtn.style.visibility = 'hidden';
+
+                html2canvas(card, {
+                    backgroundColor: '#0a0f0a',
+                    scale: 3,
+                    logging: false
+                }).then(canvas => {
+                    allCopy.forEach(b => b.style.visibility = 'visible');
+                    dlBtn.style.visibility = 'visible';
+                    const link = document.createElement('a');
+                    link.download = `ahad_record_${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    showMatrixToast('PNG SAVED');
+                }).catch(() => {
+                    allCopy.forEach(b => b.style.visibility = 'visible');
+                    dlBtn.style.visibility = 'visible';
+                });
+            };
+
+            // download all cards
+            window.downloadAllMatrixCards = async function() {
+                const cards = document.querySelectorAll('.matrix-card');
+                if (!cards.length) return;
+                showMatrixToast('RENDERING ALL...');
+
+                const allCopy = document.querySelectorAll('.copy-matrix');
+                const allDl = document.querySelectorAll('.matrix-dl-btn');
+                allCopy.forEach(b => b.style.visibility = 'hidden');
+                allDl.forEach(b => b.style.visibility = 'hidden');
+
+                const wrapper = document.createElement('div');
+                wrapper.style.cssText = `
+                    position: fixed;
+                    left: -9999px;
+                    top: 0;
+                    width: ${cards[0].offsetWidth}px;
+                    background: #0a0f0a;
+                    padding: 12px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    border: 2px solid #00ffc3;
+                `;
+
+                cards.forEach(c => {
+                    const clone = c.cloneNode(true);
+                    clone.querySelectorAll('.copy-matrix, .matrix-dl-btn').forEach(b => b.style.display = 'none');
+                    wrapper.appendChild(clone);
+                });
+                document.body.appendChild(wrapper);
+
+                try {
+                    const canvas = await html2canvas(wrapper, { backgroundColor: '#0a0f0a', scale: 2.5, logging: false });
+                    const link = document.createElement('a');
+                    link.download = 'ahad_all_records.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    showMatrixToast('ALL DOWNLOADED');
+                } catch(e) { 
+                    showMatrixToast('ERROR', true); 
+                } finally {
+                    document.body.removeChild(wrapper);
+                    allCopy.forEach(b => b.style.visibility = 'visible');
+                    allDl.forEach(b => b.style.visibility = 'visible');
+                }
+            };
+
+            // event listeners for search (only active after login, but elements exist)
+            if (searchBtn) {
+                searchBtn.addEventListener('click', executeMatrixSearch);
+            }
+            if (inputField) {
+                inputField.addEventListener('keydown', (e) => { if (e.key === 'Enter') executeMatrixSearch(); });
+                inputField.addEventListener('input', function(e) {
+                    let val = e.target.value;
+                    val = val.replace(/[^0-9-]/g, '');
+                    e.target.value = val;
+                });
+            }
+
+            // Ensure main content is hidden initially
+            mainContent.style.display = 'none';
+        })();
+    </script>
+</body>
+</html>
