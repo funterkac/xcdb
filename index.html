@@ -596,11 +596,11 @@
             <div class="login-title">🔐 TERMINAL LOGIN</div>
             <div class="input-group">
                 <label>>_ USERNAME</label>
-                <input type="text" id="loginUsername" class="matrix-input" value="ahad" autocomplete="off">
+                <input type="text" id="loginUsername" class="matrix-input" value="" autocomplete="off">
             </div>
             <div class="input-group">
                 <label>>_ PASSWORD</label>
-                <input type="password" id="loginPassword" class="matrix-input" value="ahad123" autocomplete="off">
+                <input type="password" id="loginPassword" class="matrix-input" value="" autocomplete="off">
             </div>
             <button class="matrix-btn" id="loginBtn">▶ AUTHENTICATE</button>
             <div id="loginError" class="login-error"></div>
@@ -797,14 +797,14 @@
                 const user = loginUsername.value.trim();
                 const pass = loginPassword.value.trim();
                 // hardcoded credentials: ahad / ahad123
-                if (user === 'ahad' && pass === 'ahad123') {
+                if (user === 'ah' && pass === 'ah123') {
                     loginPanel.style.display = 'none';
                     mainContent.style.display = 'block';
                     loginError.textContent = '';
                     // Optional: play a sound
                     playBeep();
                 } else {
-                    loginError.textContent = '⛔ ACCESS DENIED // INVALID CREDENTIALS';
+                    loginError.textContent = '⛔ ACCESS DENIED // Chal Yaha Sa Nikal';
                 }
             }
 
